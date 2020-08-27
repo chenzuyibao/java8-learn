@@ -1,6 +1,5 @@
 package com.poplar.test;
 
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -14,7 +13,7 @@ import java.util.Objects;
  */
 public class UnitTest {
 
-    @Test
+    //@Test
     public void test() {
         List<Double> list = Arrays.asList(4.3, 4.8, 2.3);
         double value = list.stream().peek(e -> System.out.println("from stream " + e)).filter(Objects::nonNull).map(String::valueOf).peek(e -> System.out.println("from String " + e)).map(BigDecimal::new)
@@ -22,16 +21,5 @@ public class UnitTest {
         System.out.println(value);
     }
 
-/*
-from stream 4.3
-from String 4.3
-from map 4.3
-from stream 4.8
-from String 4.8
-from map 4.8
-from stream 2.3
-from String 2.3
-from map 2.3
-11.4*/
 }
 

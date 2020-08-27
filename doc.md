@@ -237,11 +237,11 @@ public class CustomCollector<T> implements Collector<T, Set<T>, Set<T>> {
 
 - ### 流的层次结构
 
-![Stream](./imgs/stream.png)
+![Stream](imgs/stream.png)
 
 ### 终止操作类的层次结构
 
-![SinkAndTerminalOp](./imgs/ddd.png)
+![SinkAndTerminalOp](imgs/ddd.png)
 
 ```java
 /**

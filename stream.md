@@ -1,5 +1,5 @@
 # java中的流和集合的区别
-![](./imgs/streamandcollection.png)
+![](imgs/streamandcollection.png)
 
 ### 哲学中的流和集合
 

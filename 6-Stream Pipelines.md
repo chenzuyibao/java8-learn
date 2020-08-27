@@ -83,7 +83,7 @@ A9B9C9
 
 ## 一种直白的实现方式
 
-<img src="./imgs/Stream_pipeline_naive.png"  width="500px" align="right" alt="Stream_pipeline_naive"/>
+<img src="imgs/Stream_pipeline_naive.png"  width="500px" align="right" alt="Stream_pipeline_naive"/>
 
 仍然考虑上述求最长字符串的程序，一种直白的流水线实现方式是为每一次函数调用都执一次迭代，并将处理中间结果放到某种数据结构中（比如数组，容器等）。具体说来，就是调用`filter()`方法后立即执行，选出所有以*A*开头的字符串并放到一个列表list1中，之后让list1传递给`mapToInt()`方法并立即执行，生成的结果放到list2中，最后遍历list2找出最大的数字作为最终结果。程序的执行流程如如所示：
 
@@ -117,7 +117,7 @@ for(String str : strings){
 
 ### >> 操作如何记录
 
-<img src="./imgs/Java_stream_pipeline_classes.png"  width="400px" align="right" hspace="10px" alt="Java_stream_pipeline_classes"/>
+<img src="imgs/Java_stream_pipeline_classes.png"  width="400px" align="right" hspace="10px" alt="Java_stream_pipeline_classes"/>
 
 注意这里使用的是“*操作(operation)*”一词，指的是“Stream中间操作”的操作，很多Stream操作会需要一个回调函数（Lambda表达式），因此一个完整的操作是<*数据来源，操作，回调函数*>构成的三元组。Stream中使用Stage的概念来描述一个完整的操作，并用某种实例化后的*PipelineHelper*来代表Stage，将具有先后顺序的各个Stage连到一起，就构成了整个流水线。跟Stream相关类和接口的继承关系图示。
 
@@ -125,7 +125,7 @@ for(String str : strings){
 
 Stream流水线组织结构示意图如下：
 
-<img src="./imgs/Stream_pipeline_example.png"  width="700px" alt="Stream_pipeline_example"/>
+<img src="imgs/Stream_pipeline_example.png"  width="700px" alt="Stream_pipeline_example"/>
 
 图中通过`Collection.stream()`方法得到*Head*也就是stage0，紧接着调用一系列的中间操作，不断产生新的Stream。**这些Stream对象以双向链表的形式组织在一起，构成整个流水线，由于每个Stage都记录了前一个Stage和本次的操作以及回调函数，依靠这种结构就能建立起对数据源的所有操作**。这就是Stream记录操作的方式。
 
@@ -218,7 +218,7 @@ class RefSortingSink<T> extends AbstractRefSortingSink<T> {
 
 ### >> 叠加之后的操作如何执行
 
-<img src="./imgs/Stream_pipeline_Sink.png"  width="300px" align="right" hspace="10px"  alt="Stream_pipeline_Sink"/>
+<img src="imgs/Stream_pipeline_Sink.png"  width="300px" align="right" hspace="10px"  alt="Stream_pipeline_Sink"/>
 
 Sink完美封装了Stream每一步操作，并给出了[处理->转发]的模式来叠加操作。这一连串的齿轮已经咬合，就差最后一步拨动齿轮启动执行。是什么启动这一连串的操作呢？也许你已经想到了启动的原始动力就是结束操作(Terminal Operation)，一旦调用某个结束操作，就会触发整个流水线的执行。
 
