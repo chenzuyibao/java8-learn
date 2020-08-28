@@ -13,6 +13,16 @@ import java.util.stream.Collector;
  */
 public class CustomCollector2<T> implements Collector<T, Set<T>, Map<T, T>> {
 
+    public static void main(String[] args) {
+        for (int i = 0; i < 100; i++) {
+            List<String> list = Arrays.asList("hello", "hello", "world", "beautiful cat", "severn cat");
+            Set<String> set = new HashSet<>(list);
+            Map<String, String> map = set.stream().collect(new CustomCollector2<>());
+            System.out.println(map);
+
+        }
+    }
+
     @Override
     public Supplier<Set<T>> supplier() {
         System.out.println("supplier invoked");
@@ -60,15 +70,5 @@ public class CustomCollector2<T> implements Collector<T, Set<T>, Map<T, T>> {
         System.out.println("characteristics invoked");
         //此处不能使用IDENTITY_FINISH,因为返回类型和输入类型不一样
         return Collections.unmodifiableSet(EnumSet.of(Characteristics.UNORDERED, Characteristics.CONCURRENT));
-    }
-
-    public static void main(String[] args) {
-        for (int i = 0; i < 100; i++) {
-            List<String> list = Arrays.asList("hello", "hello", "world", "beautiful cat", "severn cat");
-            Set<String> set = new HashSet<>(list);
-            Map<String, String> map = set.stream().collect(new CustomCollector2<>());
-            System.out.println(map);
-
-        }
     }
 }

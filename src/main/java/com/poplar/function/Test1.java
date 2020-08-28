@@ -7,6 +7,7 @@ package com.poplar.function;
 interface MyInterFace {
 
     void test();
+
     /*  If an interface declares an abstract method overriding one of the public methods of java.lang.Object,
       that also does not count toward the interface's abstract method count since any implementation of the interface
       will have an implementation from java.lang.Object or elsewhere.*/
@@ -14,10 +15,6 @@ interface MyInterFace {
 }
 
 public class Test1 {
-
-    public void testFunctionalInterface(MyInterFace interFace) {
-        interFace.test();
-    }
 
     public static void main(String[] args) {
         Test1 test1 = new Test1();
@@ -27,5 +24,9 @@ public class Test1 {
         System.out.println(myInterFace.getClass());                    //Test1$$Lambda$2/1747585824
         System.out.println(myInterFace.getClass().getSuperclass());    //java.lang.Object
         System.out.println(myInterFace.getClass().getInterfaces()[0]);  //MyInterFace
+    }
+
+    public void testFunctionalInterface(MyInterFace interFace) {
+        interFace.test();
     }
 }

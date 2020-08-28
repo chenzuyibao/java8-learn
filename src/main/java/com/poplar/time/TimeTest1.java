@@ -40,6 +40,6 @@ public class TimeTest1 {
     public static void main(String[] args) {
         System.out.println(TimeTest1.covertUTCToDate("2019-11-23T21:59:55.232Z"));
         System.out.println(TimeTest1.covertDateToUTC(new Date()));
-        System.out.println(TimeTest1.covertDateToLocalByDateFormat(new Date(),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println(TimeTest1.covertDateToLocalByDateFormat(new Date(), "yyyy-MM-dd HH:mm:ss"));
     }
 }

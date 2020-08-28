@@ -15,7 +15,7 @@ public class Test3 {
         List<String> list = Arrays.asList("hello", "world");
         Predicate<String> p = list::add;
 
-       Consumer<String> b = list::add;
+        Consumer<String> b = list::add;
         //错误：Lambda表达式引用的局 部变量必须是最终的（final） 或事实上最终的
         int portNumber = 1337;
         //Runnable r = () -> System.out.println(portNumber);

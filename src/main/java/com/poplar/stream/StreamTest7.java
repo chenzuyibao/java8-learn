@@ -11,7 +11,7 @@ public class StreamTest7 {
     public static void main(String[] args) {
         List<String> list = Arrays.asList("hello", "hello", "world", "beautiful cat", "severn cat");
         //在没有中间操作和当前操作的流为串行流时或调用Head中的实现
-       // list.stream().forEach(System.out::println);
+        // list.stream().forEach(System.out::println);
         //而如果有中间操作且为并行流会执行ReferencePipeline中的方法
         //list.stream().map(String::toUpperCase).forEach(System.out::println);
 

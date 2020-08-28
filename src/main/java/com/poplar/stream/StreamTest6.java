@@ -33,6 +33,12 @@ class Student {
 
     private double score;
 
+    public Student(String name, int age, double score) {
+        this.name = name;
+        this.age = age;
+        this.score = score;
+    }
+
     public String getName() {
         return name;
     }
@@ -54,12 +60,6 @@ class Student {
     }
 
     public void setScore(double score) {
-        this.score = score;
-    }
-
-    public Student(String name, int age, double score) {
-        this.name = name;
-        this.age = age;
         this.score = score;
     }
 }

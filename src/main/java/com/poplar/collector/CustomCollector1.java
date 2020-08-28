@@ -13,6 +13,20 @@ import java.util.stream.Collector;
  */
 public class CustomCollector1<T> implements Collector<T, Set<T>, Set<T>> {
 
+    public static void main(String[] args) {
+        List<String> list = Arrays.asList("hello", "hello", "world", "beautiful cat", "severn cat");
+        Set<String> set = list.stream().collect(new CustomCollector1<>());
+        System.out.println(set);
+        /*
+        执行结果：
+        supplier invoked
+         accumulator invoked
+         combiner invoked
+         characteristics invoked
+         characteristics invoked
+         [world, severn cat, hello, beautiful cat]*/
+    }
+
     @Override
     public Supplier<Set<T>> supplier() {
         System.out.println("supplier invoked");
@@ -48,19 +62,5 @@ public class CustomCollector1<T> implements Collector<T, Set<T>, Set<T>> {
     public Set<Characteristics> characteristics() {
         System.out.println("characteristics invoked");
         return Collections.unmodifiableSet(EnumSet.of(Characteristics.IDENTITY_FINISH, Characteristics.UNORDERED));
-    }
-
-    public static void main(String[] args) {
-        List<String> list = Arrays.asList("hello", "hello", "world", "beautiful cat", "severn cat");
-        Set<String> set = list.stream().collect(new CustomCollector1<>());
-        System.out.println(set);
-        /*
-        执行结果：
-        supplier invoked
-         accumulator invoked
-         combiner invoked
-         characteristics invoked
-         characteristics invoked
-         [world, severn cat, hello, beautiful cat]*/
     }
 }

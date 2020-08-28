@@ -1,6 +1,6 @@
 package com.poplar.function;
 
-        import java.util.function.Function;
+import java.util.function.Function;
 
 /**
  * BY poplar ON 2019/11/17
@@ -12,7 +12,7 @@ public class FunctionTest {
         FunctionTest functionTest = new FunctionTest();
         //函数式编程——>方法中可以传入行为--->高阶函数
         System.out.println(functionTest.computer(2, value -> value + 2));
-        System.out.println(functionTest.convert(2, value -> String.valueOf(value + "Hello")));
+        System.out.println(functionTest.convert(2, value -> value + "Hello"));
     }
 
     /**

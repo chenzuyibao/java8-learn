@@ -2,9 +2,7 @@ package com.poplar.stream;
 
 import java.util.Arrays;
 import java.util.IntSummaryStatistics;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
