@@ -1,5 +1,7 @@
 #  JDK8
 
+[TOC]
+
 #### 1.Grande介绍
 
 .Grandle/Maven:目录结构一样的，约定优于配置
@@ -189,7 +191,7 @@ public interface Iterable<T> {
 
 函数式接口加入，保证了向下兼容
 
-#### 5.Comsumer
+#### 5.Comsumer（消费者）
 
 ```java
 package java.util.function;
@@ -250,7 +252,7 @@ interface TheInterface {
 @FunctionalInterface
 interface TheInterface2{
 
-    void myMetho=d2();
+    void myMethod2();
 }
 ```
 
@@ -261,17 +263,20 @@ TheInterface2 i2 =()->{};
 System.out.println(i2.getClass().getInterfaces()[0]);
 ```
 
-==()->{}是Lamada表达式，它必须有上下文，它只关心方法参数和返回类型（虽然方法名字实现对于接口很关键，但是对于Labmda表达式并不担心方法名字是什么）==
+**()->{}是Lamada表达式，它必须有上下文，它只关心方法参数和返回类型（虽然方法名字实现对于接口很关键，但是对于Labmda表达式并不担心方法名字是什么）**
 
-#### 6..方法引用（粗略）
+#### 6.方法引用
 
 通过方法引用的形式创建Lambda接口的实例 
 
 ```java
+list.forEach(item -> {System.out.println(item.toUpperCase())})
+list.stream().map(item -> item.toUpperCase()).forEach(item -> System.out.println(item))
+list.stream().map(String::toUpperCase).forEach(item -> System.out.println(item))
 list.stream().map(String::toUpperCase).forEach(System.out::println);
 ```
 
-stream是单线程完成的，parallelStream是由多线程完成的。
+**stream是单线程完成的，parallelStream是由多线程完成的。**
 
 还可以分为中间流和结点流，中间流可以连续操作，结点流得到最终结果，不能再被操作 
 
@@ -281,19 +286,19 @@ public String toUpperCase() {
 }
 ```
 
-==调用toUpperCase方法的当前对象作为输入（所有实例的实例方法，第一个参数都是隐式的this，也就是stream流中的每一个String对象）==
+* **调用toUpperCase方法的当前对象作为输入（所有实例的实例方法，第一个参数都是隐式的this，也就是stream流中的每一个String对象）**
 
-==输出为执行完toUpperCase方法后的对象（也就是上面代码return的部分）==
+* **输出为执行完toUpperCase方法后的对象（也就是上面代码return的部分）**
 
-#### 7..Function	
+#### 7.Function	
 
 ```java
 Function<String,String> function=String::toUpperCase;
 ```
 
-==不能写成String.toupperCase,因为toUpperCase不是静态方法==
+* 不能写成String.toupperCase,因为toUpperCase不是静态方法
 
-==**如5所讲，一定会存在一个String的实例对象(假设为str)，去调用toUpperCase==**
+* 如5所讲，一定会存在一个String的实例对象(假设为str)，去调用toUpperCase
 
 **总结：如果一个类类型，直接通过 :: 引用实例方法，对应Lambda表达式的第一个参数,就是调用这个方法的对象（this）**
 
@@ -401,7 +406,7 @@ public class FunctionTest {
 }
 ```
 
-==Integer -->String  Integer.toString(a);  String.valueOf==
+Integer -->String  Integer.toString(a);  String.valueOf
 
 **结论：Lambda表达式传递的是行为，以前是行为提前定义好，调用行为**
 
@@ -421,9 +426,9 @@ default <V> Function<T, V> andThen(Function<? super R, ? extends V> after) {
 
 **区别:**
 
-**compose :先调用参数接口执行apply()方法，得到的结果作为参数再执行apply()方法**
+**compose(组合) :先调用参数接口执行apply()方法，得到的结果作为参数再执行apply()方法**
 
-**andThen:先调用本接口内的apply()方法，得到的接口再调用参数的apply接口的apply()方法**
+**andThen(随后):先调用本接口内的apply()方法，得到的接口再调用参数的apply接口的apply()方法**
 
 ```java
 public class FunctionTest2 {
@@ -447,13 +452,15 @@ compute = 4
 compute2 = 2
 ```
 
-先执行function2.apply()再把得到的结果作为参数执行function1.apply()
+compose:先执行function2.apply()再把得到的结果作为参数执行function1.apply()
 
-##### 7.1高阶函数
+andThen:先执行function1.apply()再把得到的结果作为参数执行function2.apply()
+
+##### 7.1BiFunction
 
 如果一个函数接收一个函数作为参数，或者返回一个函数作为返回值，那么该函数称为高阶函数。
 
-拓展：BiFuction
+拓展：BiFunction：接收两个参数，得到一个结果
 
 ```java
 @FunctionalInterface
@@ -469,13 +476,20 @@ public interface BiFunction<T, U, R> {
 ```
 
 ```java
+public static int compute3(int a,int b,BiFunction<Integer,Integer,Integer> biFunction){
+    return biFunction.apply(a,b);
+}
 public static int compute4(int a, int b, BiFunction<Integer,Integer,Integer> biFunction,Function<Integer,Integer> function){
     return biFunction.andThen(function).apply(a,b);
 }
 ```
 
 ```java
-System.out.println(compute4(10, 20, (val1, val2) -> val1 + val2, val -> val * val));
+System.out.println(compute3(1,2,(val1,val2) -> val1 + val2)); //3
+System.out.println(compute3(1,2,(val1,val2) -> val1 - val2)); // -1
+System.out.println(compute3(1,2,(val1,val2) -> val1 * val2)); // 2
+System.out.println(compute3(1,2,(val1,val2) -> val1 / val2)); //0.5
+System.out.println(compute4(10, 20, (val1, val2) -> val1 + val2, val -> val * val));//900
 ```
 
 输出：900
@@ -496,7 +510,7 @@ personByAge2.forEach(p-> System.out.println(p.getAge()));
 21
 23
 
-#### 8.Predicate
+#### 8.Predicate（判断）
 
 ```java
 public class PredicateTest {
@@ -696,7 +710,7 @@ public class PredicateTest2 {
 
 
 
-#### 9.Supplier
+#### 9.Supplier(供应者)
 
 ```java
 package java.util.function;
@@ -749,7 +763,7 @@ public class StudentTest {
 
 
 
-**BinaryOperator**  extends BiFunction
+#### 10.BinaryOperator（运算）
 
 ```java
 package java.util.function;
@@ -808,8 +822,6 @@ public interface BinaryOperator<T> extends BiFunction<T,T,T> {
 
 
 
-**用于没有输入参数的工厂**
-
 ```java
 public class BinaryOperateorTest {
     public static void main(String[] args) {
@@ -842,7 +854,7 @@ aShort1 = tang
 
 
 
-#### 10.Optional
+#### 11.Optional（可选择的）
 
 NPE NullPointerException
 
@@ -881,10 +893,6 @@ public final class Optional<T> {
 }
 ```
 
-
-
-
-
 创建Optional对象方法
 
 ```java
@@ -895,7 +903,7 @@ public static<T> Optional<T> empty() {
 }
 private static final Optional<?> EMPTY = new Optional<>(); private Optional() {
         this.value = null;
-    }
+}
 
 ```
 
@@ -1078,7 +1086,7 @@ java.time.LocalDateTime
 
 A program may produce unpredictable results if it attempts to distinguish two references to equal values of a value-based class, whether directly via reference equality or indirectly via an appeal to synchronization, identity hashing, serialization, or any other identity-sensitive mechanism. Use of such identity-sensitive operations on instances of value-based classes may have unpredictable effects and should be avoided.
 
-#### 11.方法引用
+#### 12.方法引用
 
 方法引用实际上是Lambda表达式的语法糖 
 
@@ -1204,7 +1212,7 @@ public class MethodRefencedTest {
 }
 ```
 
-#### 12.System.out::println
+#### 13.System.out::println
 
 ```java
 //引用名（对象名）::实例方法名
@@ -1230,7 +1238,7 @@ public final class System {
 
 
 
-#### 13.默认方法
+#### 14.默认方法
 
 ```java
 public interface MyInterface1 {
@@ -1285,7 +1293,7 @@ public class MyClass extends MyInterface1Impl implements MyInterface1 {
 
 **java认为实现类比接口更为具体**，所以如果MyClass继承了MyInterface1Impl(重写了接口里面的method默认方法)和实现了Interface2，那么对于具有相同的默认方法，则**类MyClass优先调用继承类里面的方法。**
 
-#### 14.为什么要有默认方法 
+#### 15.为什么要有默认方法 
 
 在 java 8 之前，接口与其实现类之间的 **耦合度** 太高了（**tightly coupled**），当需要为一个接口添加方法时，所有的实现类都必须随之修改。默认方法解决了这个问题，它可以为接口添加新的方法，而不会破坏已有的接口的实现。这在 lambda 表达式作为 java 8 语言的重要特性而出现之际，为升级旧接口且保持向后兼容（backward compatibility）提供了途径。 
 
@@ -1301,7 +1309,7 @@ list.forEach(System.out::println); // 这是 jdk 1.8 新增的接口默认方法
 
 ###### 这个 forEach 方法是 jdk 1.8 新增的接口默认方法，正是因为有了默认方法的引入，才不会因为 Iterable 接口中添加了 forEach 方法就需要修改所有 Iterable 接口的实现类。
 
-#### 15.Stream
+#### 16.Stream
 
 **三部分构成**
 
@@ -1760,7 +1768,7 @@ Stream.iterate(0, i->(i+1)%2).limit(6).distinct().forEach(System.out::println);
 
 Process finished with exit code 0
 
-#### 16.内部迭代和外部迭代的区别
+#### 17.内部迭代和外部迭代的区别
 
 ![1577349043663](JDK8 .assets/1577349043663.png)
 
@@ -1778,7 +1786,7 @@ Process finished with exit code 0
 
 
 
-#### 17.并发流与流的短路
+#### 18.并发流与流的短路
 
 ```java
 public class StreamTest9 {
@@ -1830,7 +1838,7 @@ world
 
 
 
-#### 18.习题：去重
+#### 19.习题：去重
 
 ```java
 public class StreamTest11 {
@@ -1850,7 +1858,7 @@ hello
 welcome
 world
 
-#### 19.stream用作笛卡尔积
+#### 20.stream用作笛卡尔积
 
 ```java
 public class StreamTest12 {
@@ -1880,7 +1888,7 @@ zhaoliu 你好
 
 ==**flatMap是将结果打平,返回单个的Stream对象，map则不一定，可能是stream<Stream<T>>的对象，没有被打平，各自分散，需要被打平==**
 
-#### 20.分区与分组
+#### 21.分区与分组
 
 ```java
 @Setter
@@ -1940,7 +1948,7 @@ public class StreamTest13 {
 
 
 
-#### 21.Collectors
+#### 22.Collectors
 
 
 
@@ -2287,7 +2295,7 @@ public interface Collector<T, A, R> {
 
 
 
-#### 22.多级分组和分区
+#### 23.多级分组和分区
 
 ```java
 /**
@@ -2445,7 +2453,7 @@ Process finished with exit code 0
 
 
 
-#### 23.Comparator
+#### 24.Comparator
 
 ```java
 public class MyComparatorTest {
@@ -2573,7 +2581,7 @@ default Comparator<T> thenComparing(Comparator<? super T> other) {
 
 **总结：jdk8之前只有Comparator里面只有抽象方法compare，比较所接收的两个元素，的比较结果为0,负数，正数，来判断第一个元素和第二个元素的先后顺序，负数为正序，正数为逆序。jdk8之后，增加了若干个default方法reversed，thenComparing和多种重载方法，和若干static方法如reverseOrder，针对通用类型，提供通用提供comparing排序手段，针对原生数据类型int，long，double提供了三个特化的comparingInt，comparingLong，comparingDouble，有具体的特化实现要具体调用，避免不必要的装箱拆箱的性能损耗。**
 
-#### 24.手写Collecor实现类
+#### 25.手写Collecor实现类
 
 ```java
 package com.tang.stream2;
